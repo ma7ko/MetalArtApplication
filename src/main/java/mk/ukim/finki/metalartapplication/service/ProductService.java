@@ -2,8 +2,11 @@ package mk.ukim.finki.metalartapplication.service;
 
 import mk.ukim.finki.metalartapplication.model.Dimension;
 import mk.ukim.finki.metalartapplication.model.Product;
+import mk.ukim.finki.metalartapplication.model.dto.DimensionDTORequest;
 import mk.ukim.finki.metalartapplication.model.enumeration.Shape;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +20,12 @@ public interface ProductService {
                                            Long amount,
                                            boolean available,
                                            Shape shape,
-                                           Dimension dimension);
+                                 DimensionDTORequest dimension);
     public Product createProduct (String name, String description,
                                             Double price,
                                             Long amount,
                                             boolean available,
                                             Shape shape,
-                                            Dimension dimension);
+                                            DimensionDTORequest dimension,
+                                            MultipartFile image) throws IOException;
 }

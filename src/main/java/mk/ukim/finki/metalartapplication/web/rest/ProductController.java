@@ -1,10 +1,13 @@
 package mk.ukim.finki.metalartapplication.web.rest;
 
 import mk.ukim.finki.metalartapplication.model.Product;
+import mk.ukim.finki.metalartapplication.model.dto.DimensionDTORequest;
 import mk.ukim.finki.metalartapplication.model.dto.ProductDTORequest;
+import mk.ukim.finki.metalartapplication.model.enumeration.Shape;
 import mk.ukim.finki.metalartapplication.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Product> getProductById(@RequestParam Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         try {
             Product product = this.productService.getProductById(id);
             return ResponseEntity.ok(product);
@@ -40,7 +43,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
-    public ResponseEntity deleteProduct(@RequestParam Long id) {
+    public ResponseEntity deleteProduct(@PathVariable Long id) {
         try {
             boolean deleted = this.productService.deleteProduct(id);
             return ResponseEntity.ok().build();
@@ -50,10 +53,10 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
-    public ResponseEntity<Product> updateProduct(@RequestParam Long id,
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id,
                                                  @RequestBody ProductDTORequest productRequest) {
         try {
-            Product product = this.productService.updateProduct(productRequest.getId(),
+            Product product = this.productService.updateProduct(id,
                     productRequest.getName(),
                     productRequest.getDescription(),
                     productRequest.getPrice(),
@@ -69,15 +72,18 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<Product> createProduct(@RequestBody ProductDTORequest productRequest) {
+    public ResponseEntity<Product> createProduct(@RequestParam MultipartFile uploadedFile, @RequestParam String name,
+                                                 @RequestParam String description, @RequestParam Double price,
+                                                 @RequestParam Long amount, @RequestParam boolean available) {
         try {
-            Product product = this.productService.createProduct(productRequest.getName(),
-                    productRequest.getDescription(),
-                    productRequest.getPrice(),
-                    productRequest.getAmount(),
-                    productRequest.isAvailable(),
-                    productRequest.getShape(),
-                    productRequest.getDimension());
+            Product product = this.productService.createProduct(name,
+                    description,
+                    price,
+                    amount,
+                    available,
+                    Shape.ROUNDED,
+                    new DimensionDTORequest(12.0,12.0,12.0),
+                    uploadedFile);
 
             return ResponseEntity.ok(product);
         } catch (Exception exception) {

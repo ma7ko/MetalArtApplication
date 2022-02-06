@@ -18,6 +18,9 @@ public class Product {
     private Long amount;
     private boolean available;
 
+    @Lob
+    private byte[] image;
+
     @Enumerated(EnumType.STRING)
     private Shape shape;
 
@@ -27,7 +30,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String description, Double price, Long amount, boolean available, Shape shape, Dimension dimension) {
+    public Product(String name, String description, Double price, Long amount, boolean available, Shape shape, Dimension dimension, byte[] image) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -35,5 +38,6 @@ public class Product {
         this.shape = shape;
         this.available = available;
         this.dimension = dimension;
+        this.image = image;
     }
 }
