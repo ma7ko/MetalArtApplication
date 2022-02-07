@@ -14,6 +14,7 @@ public interface ProductService {
     public List<Product> getAll();
     public Product getProductById(Long id);
     public boolean deleteProduct(Long id);
+    public boolean bulkDeleteProducts(List<Long> ids);
     public Product updateProduct(Long id, String name,
                                            String description,
                                            Double price,
@@ -28,4 +29,5 @@ public interface ProductService {
                                             Shape shape,
                                             DimensionDTORequest dimension,
                                             MultipartFile image) throws IOException;
+    public List<Product> getSimilarProductsTo(Long id);
 }

@@ -32,6 +32,16 @@ public class ProductController {
         }
     }
 
+    @RequestMapping(value = "/{id}/similar-products", method = RequestMethod.GET)
+    public ResponseEntity<List<Product>> similarProducts(@PathVariable Long id) {
+        try {
+            List<Product> products = this.productService.getSimilarProductsTo(id);
+            return ResponseEntity.ok(products);
+        } catch (Exception exception) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         try {
@@ -72,20 +82,33 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<Product> createProduct(@RequestParam MultipartFile uploadedFile, @RequestParam String name,
+    public ResponseEntity<Product> createProduct(@RequestParam MultipartFile uploadedFile, @RequestParam Double width,
+                                                 @RequestParam Double height, @RequestParam Double depth,
+                                                 @RequestParam Long amount, @RequestParam boolean available,
                                                  @RequestParam String description, @RequestParam Double price,
-                                                 @RequestParam Long amount, @RequestParam boolean available) {
+                                                 @RequestParam Integer shape, @RequestParam String name) {
         try {
             Product product = this.productService.createProduct(name,
                     description,
                     price,
                     amount,
                     available,
-                    Shape.ROUNDED,
-                    new DimensionDTORequest(12.0,12.0,12.0),
+                    Shape.values()[shape],
+                    new DimensionDTORequest(width, height, depth),
                     uploadedFile);
 
             return ResponseEntity.ok(product);
+        } catch (Exception exception) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @RequestMapping(value = "/bulk-delete", method = RequestMethod.POST)
+    public ResponseEntity bulkDeleteProducts(@RequestBody List<Long> ids) {
+        try {
+            boolean deleted = this.productService.bulkDeleteProducts(ids);
+            return ResponseEntity.ok(deleted);
+
         } catch (Exception exception) {
             return ResponseEntity.badRequest().body(null);
         }

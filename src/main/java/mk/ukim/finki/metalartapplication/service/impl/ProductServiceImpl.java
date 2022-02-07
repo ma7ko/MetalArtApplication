@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -50,6 +52,15 @@ public class ProductServiceImpl implements ProductService {
             throw new InvalidParameterException();
         }
         this.productRepository.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public boolean bulkDeleteProducts(List<Long> ids) {
+        if (ids == null || ids.size() == 0) {
+            throw new InvalidParameterException();
+        }
+        this.productRepository.deleteAllById(ids);
         return true;
     }
 
@@ -97,5 +108,18 @@ public class ProductServiceImpl implements ProductService {
                 image.getBytes());
 
         return this.productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> getSimilarProductsTo(Long id) {
+        List<Product> products = this.productRepository.findAll();
+        Random random = new Random();
+        Integer num = random.nextInt(products.size() - 5);
+
+        return products.stream()
+                .filter(p -> !p.getId().equals(id))
+                .skip(num)
+                .limit(3)
+                .collect(Collectors.toList());
     }
 }
