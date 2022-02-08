@@ -3,15 +3,20 @@ package mk.ukim.finki.metalartapplication.service.impl;
 import mk.ukim.finki.metalartapplication.model.Dimension;
 import mk.ukim.finki.metalartapplication.model.Product;
 import mk.ukim.finki.metalartapplication.model.dto.DimensionDTORequest;
+import mk.ukim.finki.metalartapplication.model.dto.search.PagedResponse;
+import mk.ukim.finki.metalartapplication.model.dto.search.SearchRequest;
+import mk.ukim.finki.metalartapplication.model.dto.search.util.SearchRequestUtilClass;
 import mk.ukim.finki.metalartapplication.model.enumeration.Shape;
 import mk.ukim.finki.metalartapplication.repository.DimensionRepository;
 import mk.ukim.finki.metalartapplication.repository.ProductRepository;
 import mk.ukim.finki.metalartapplication.service.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -29,8 +34,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAll() {
-        return this.productRepository.findAll();
+    public PagedResponse<Product> getAll(SearchRequest request) {
+        final Page<Product> products = this.productRepository.findAll(SearchRequestUtilClass.toPageRequest(request));
+        if (products.isEmpty()) {
+            return new PagedResponse<Product>(Collections.emptyList(), 0L, products.getTotalElements());
+        }
+
+        return new PagedResponse<Product>(products.getContent(), (long) products.getSize(), products.getTotalElements());
     }
 
     @Override

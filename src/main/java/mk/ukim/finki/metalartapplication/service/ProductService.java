@@ -3,6 +3,8 @@ package mk.ukim.finki.metalartapplication.service;
 import mk.ukim.finki.metalartapplication.model.Dimension;
 import mk.ukim.finki.metalartapplication.model.Product;
 import mk.ukim.finki.metalartapplication.model.dto.DimensionDTORequest;
+import mk.ukim.finki.metalartapplication.model.dto.search.PagedResponse;
+import mk.ukim.finki.metalartapplication.model.dto.search.SearchRequest;
 import mk.ukim.finki.metalartapplication.model.enumeration.Shape;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    public List<Product> getAll();
+    public PagedResponse<Product> getAll(SearchRequest request);
     public Product getProductById(Long id);
     public boolean deleteProduct(Long id);
     public boolean bulkDeleteProducts(List<Long> ids);

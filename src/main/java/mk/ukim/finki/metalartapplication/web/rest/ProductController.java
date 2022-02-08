@@ -3,6 +3,8 @@ package mk.ukim.finki.metalartapplication.web.rest;
 import mk.ukim.finki.metalartapplication.model.Product;
 import mk.ukim.finki.metalartapplication.model.dto.DimensionDTORequest;
 import mk.ukim.finki.metalartapplication.model.dto.ProductDTORequest;
+import mk.ukim.finki.metalartapplication.model.dto.search.PagedResponse;
+import mk.ukim.finki.metalartapplication.model.dto.search.SearchRequest;
 import mk.ukim.finki.metalartapplication.model.enumeration.Shape;
 import mk.ukim.finki.metalartapplication.service.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +25,9 @@ public class ProductController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<PagedResponse<Product>> getAllProducts(@RequestParam Integer page, @RequestParam Integer size) {
         try {
-            List<Product> products = this.productService.getAll();
+            PagedResponse<Product> products = this.productService.getAll(new SearchRequest(page, size));
             return ResponseEntity.ok(products);
         } catch (Exception exception) {
             return ResponseEntity.notFound().build();
