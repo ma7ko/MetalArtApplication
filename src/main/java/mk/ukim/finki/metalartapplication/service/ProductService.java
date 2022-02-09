@@ -23,7 +23,8 @@ public interface ProductService {
                                            Long amount,
                                            boolean available,
                                            Shape shape,
-                                 DimensionDTORequest dimension);
+                                 DimensionDTORequest dimension, MultipartFile image,
+                                 Long dimensionId) throws IOException;
     public Product createProduct (String name, String description,
                                             Double price,
                                             Long amount,

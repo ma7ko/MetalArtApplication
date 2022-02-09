@@ -5,11 +5,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
+@Data
 @Entity
 @Table(name = "Users")
 public class User implements UserDetails {
@@ -20,6 +19,10 @@ public class User implements UserDetails {
 
     @ManyToOne
     private Role role;
+
+    @OneToOne
+    private ShoppingCart shoppingCart;
+
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
@@ -39,6 +42,7 @@ public class User implements UserDetails {
         this.isCredentialsNonExpired = true;
         this.isEnabled = false;
         this.role = role;
+        this.shoppingCart = new ShoppingCart();
     }
 
     @Override

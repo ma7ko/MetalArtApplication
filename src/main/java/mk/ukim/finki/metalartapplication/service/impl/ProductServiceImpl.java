@@ -75,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long id, String name, String description, Double price, Long amount, boolean available, Shape shape, DimensionDTORequest dimension) {
+    public Product updateProduct(Long id, String name, String description, Double price, Long amount, boolean available, Shape shape, DimensionDTORequest dimension, MultipartFile image, Long dimensionId) throws IOException {
         Optional<Product> productCheck = this.productRepository.findById(id);
 
         if ( productCheck.isEmpty() ) {
@@ -84,14 +84,25 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productCheck.get();
 
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setAmount(amount);
-        product.setAvailable(available);
-        product.setShape(shape);
+        if (image != null) {
+            product.setImage(image.getBytes());
+        }
 
-        Optional<Dimension> dimCheck = this.dimensionRepository.findById(product.getDimension().getId());
+        if (name != null && !name.isEmpty())
+            product.setName(name);
+        if (description != null && !description.isEmpty())
+            product.setDescription(description);
+        if (price != null)
+            product.setPrice(price);
+        if (amount != null)
+            product.setAmount(amount);
+
+        product.setAvailable(available);
+
+        if (shape != null)
+            product.setShape(shape);
+
+        Optional<Dimension> dimCheck = this.dimensionRepository.findById(dimensionId);
         if (dimCheck.isEmpty()) {
             throw new InvalidParameterException();
         }

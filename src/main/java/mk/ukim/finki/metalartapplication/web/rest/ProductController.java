@@ -66,16 +66,22 @@ public class ProductController {
 
     @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
     public ResponseEntity<Product> updateProduct(@PathVariable Long id,
-                                                 @RequestBody ProductDTORequest productRequest) {
+                                                 @RequestParam(required = false) MultipartFile uploadedFile, @RequestParam Double width,
+                                                 @RequestParam Double height, @RequestParam Double depth,
+                                                 @RequestParam Long amount, @RequestParam boolean available,
+                                                 @RequestParam String description, @RequestParam Double price,
+                                                 @RequestParam Integer shape, @RequestParam String name, @RequestParam Long dimid) {
         try {
             Product product = this.productService.updateProduct(id,
-                    productRequest.getName(),
-                    productRequest.getDescription(),
-                    productRequest.getPrice(),
-                    productRequest.getAmount(),
-                    productRequest.isAvailable(),
-                    productRequest.getShape(),
-                    productRequest.getDimension());
+                    name,
+                    description,
+                    price,
+                    amount,
+                    available,
+                    Shape.values()[shape],
+                    new DimensionDTORequest(width, height, depth),
+                    uploadedFile,
+                    dimid);
 
             return ResponseEntity.ok(product);
         } catch (Exception exception) {
