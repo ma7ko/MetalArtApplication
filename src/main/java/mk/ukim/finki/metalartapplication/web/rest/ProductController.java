@@ -121,4 +121,14 @@ public class ProductController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseEntity<PagedResponse<Product>> searchProducts(@RequestParam Integer page, @RequestParam Integer size, @RequestParam String searchString) {
+        try {
+            PagedResponse<Product> products = this.productService.search(new SearchRequest(page, size), searchString);
+            return ResponseEntity.ok(products);
+        } catch (Exception exception) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
