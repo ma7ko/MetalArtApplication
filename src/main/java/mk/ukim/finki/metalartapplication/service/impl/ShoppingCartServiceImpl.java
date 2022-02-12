@@ -9,6 +9,7 @@ import mk.ukim.finki.metalartapplication.repository.UserRepository;
 import mk.ukim.finki.metalartapplication.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
@@ -27,20 +28,51 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void addProductToUserCart(Long productId, String username) {
-        if (productId == null || username == null || username.isEmpty())
+    public ShoppingCart getCartByUser(User user) {
+        if (user == null)
             throw new InvalidParameterException();
 
-        Optional<User> optionalUser = this.userRepository.findById(username);
+        Optional<ShoppingCart> optionalCart = this.cartRepository.findByUser(user);
+
+        if (optionalCart.isEmpty())
+            throw new InvalidParameterException();
+
+        return optionalCart.get();
+    }
+
+    @Transactional
+    @Override
+    public List<Product> getUserProducts(User user) {
+        if (user == null)
+            throw new InvalidParameterException();
+
+        ShoppingCart shoppingCart = this.getCartByUser(user);
+
+        return shoppingCart.getProducts();
+    }
+
+    @Transactional
+    @Override
+    public void addProductToUserCart(Long productId, User user) {
+        if (productId == null || user == null)
+            throw new InvalidParameterException();
+
         Optional<Product> optionalProduct = this.productRepository.findById(productId);
-        if (optionalProduct.isEmpty() || optionalUser.isEmpty())
+        if (optionalProduct.isEmpty())
             throw new InvalidParameterException();
 
         Product product = optionalProduct.get();
-        ShoppingCart cart = optionalUser.get().getShoppingCart();
+        ShoppingCart cart = this.getCartByUser(user);
 
         List<Product> storedProducts = cart.getProducts();
-        storedProducts.add(product);
+
+        if (storedProducts.contains(product)) {
+            storedProducts.remove(product);
+        } else {
+            storedProducts.add(product);
+        }
+
+        cart.setProducts(storedProducts);
 
         this.cartRepository.save(cart);
     }

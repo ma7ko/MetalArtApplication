@@ -55,9 +55,9 @@ public class UserServiceImpl implements UserService {
         }
 
         Role role = this.roleRepository.findByKey(User.DEFAULT_ROLE).orElseThrow(InvalidParameterException::new);
-        ShoppingCart shoppingCart = new ShoppingCart(username + "_cart");
+        ShoppingCart shoppingCart = new ShoppingCart();
         this.shoppingCartRepository.save(shoppingCart);
-        User user = new User(username, passwordEncoder.encode(password), role, shoppingCart);
+        User user = new User(username, passwordEncoder.encode(password), role);
 
         return userRepository.save(user);
     }
@@ -75,22 +75,6 @@ public class UserServiceImpl implements UserService {
         this.userRepository.save(validatingUser);
 
         return validatingUser;
-    }
-
-    @Transactional
-    @Override
-    public List<Product> getUserProducts(String username) {
-        if (username == null || username.isEmpty())
-            throw new InvalidParameterException();
-
-        Optional<User> user = this.userRepository.findByUsername(username);
-        if (user.isEmpty())
-            throw new InvalidParameterException();
-
-        User loggedUser = user.get();
-        ShoppingCart shoppingCart = loggedUser.getShoppingCart();
-
-        return shoppingCart.getProducts();
     }
 
 }
