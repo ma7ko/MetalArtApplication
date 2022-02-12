@@ -34,7 +34,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, Role role) {
+    public User(String username, String password, Role role, ShoppingCart shoppingCart) {
         this.username = username;
         this.password = password;
         this.isAccountNonExpired = true;
@@ -42,7 +42,7 @@ public class User implements UserDetails {
         this.isCredentialsNonExpired = true;
         this.isEnabled = false;
         this.role = role;
-        this.shoppingCart = new ShoppingCart();
+        this.shoppingCart = shoppingCart;
     }
 
     @Override

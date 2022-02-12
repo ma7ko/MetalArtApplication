@@ -14,10 +14,13 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Product> products;
 
     public ShoppingCart() {
+    }
+
+    public ShoppingCart(String name) {
         this.products = new ArrayList<>();
     }
 }

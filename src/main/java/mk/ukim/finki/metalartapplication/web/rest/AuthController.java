@@ -1,6 +1,7 @@
 package mk.ukim.finki.metalartapplication.web.rest;
 
 import mk.ukim.finki.metalartapplication.config.CustomUsernamePasswordAuthenticationProvider;
+import mk.ukim.finki.metalartapplication.model.Role;
 import mk.ukim.finki.metalartapplication.model.dto.AuthenticationRequest;
 import mk.ukim.finki.metalartapplication.model.dto.AuthenticationResponse;
 import mk.ukim.finki.metalartapplication.service.UserService;
@@ -48,6 +49,6 @@ public class AuthController {
         final UserDetails userDetails = this.userService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = this.jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUsername(), (Role) userDetails.getAuthorities().stream().findFirst().get()));
     }
 }
