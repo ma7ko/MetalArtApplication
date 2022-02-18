@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h2>Dear Manufacturer,</h2>
+    <p>In this email message I am writing to you about creating custom product.<br/>
+        This are the additional information:</p>
+    <h4>Title: <span style="font-weight: normal;" th:text="${title}"></span></h4>
+    <h4>Description: <span style="font-weight: normal;" th:text="${description}"></span></h4>
+    <h4>Width: <span style="font-weight: normal;" th:text="${width}"></span> <span th:text="${metric}"></span></h4>
+    <h4>Height: <span style="font-weight: normal;" th:text="${height}"></span> <span th:text="${metric}"></span></h4>
+    <h4>Depth: <span style="font-weight: normal;" th:text="${depth}"></span> <span th:text="${metric}"></span></h4>
+</div>
+
+</body>
+</html>
