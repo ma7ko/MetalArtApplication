@@ -33,4 +33,5 @@ public interface ProductService {
                                             DimensionDTORequest dimension,
                                             MultipartFile image) throws IOException;
     public List<Product> getSimilarProductsTo(Long id);
+    public PagedResponse<Product> search(SearchRequest request, String searchString);
 }
