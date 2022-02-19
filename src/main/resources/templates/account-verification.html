@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div style="display: flex;flex-direction: column;">
+  <div style="min-height: 500px;">
+      <h2>Hello <span th:text="${username}"></span></h2>
+    <p>This is automatic message sent to you in order to confirm <br>
+        your request for creating account on our web page Metal Art Application</p>
+      <p>To start using your account press the button below</p>
+      <a th:href="@{http://localhost:8080/user-mail/{username}/verify-account(username=${username})}" style="text-decoration: none;cursor:pointer;"><button style="border: none; background: #33aacf; width: 300px; height: 50px; border-radius: 10px; color:white;">Verify Account</button></a>
+  </div>
+</div>
+
+</body>
+</html>

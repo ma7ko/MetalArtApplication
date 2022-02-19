@@ -20,9 +20,6 @@ public class User implements UserDetails {
     @ManyToOne
     private Role role;
 
-    @OneToOne
-    private ShoppingCart shoppingCart;
-
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
@@ -42,7 +39,6 @@ public class User implements UserDetails {
         this.isCredentialsNonExpired = true;
         this.isEnabled = false;
         this.role = role;
-        this.shoppingCart = new ShoppingCart();
     }
 
     @Override

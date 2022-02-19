@@ -4,6 +4,7 @@ import lombok.Data;
 import mk.ukim.finki.metalartapplication.model.enumeration.Shape;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity

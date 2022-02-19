@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/products")
 public class ProductController {
 
@@ -44,7 +44,7 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/details", method = RequestMethod.GET)
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         try {
             Product product = this.productService.getProductById(id);
